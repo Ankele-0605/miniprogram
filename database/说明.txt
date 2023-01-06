@@ -1,0 +1,6 @@
+数据库名-miniprograme
+集合名字-goods|sort
+
+导入数据库
+mongoimport -d miniprograme -c goods goods.txt
+mongoimport -d miniprograme -c sort sort.txt
