@@ -6,16 +6,27 @@
 </template>
 
 <script>
-	export default {
-		data() {
-			return {
-
+import { axiosGet } from '@/common/js/http.js'
+export default {
+	data() {
+		return {
+			goodlist: [],
+		}
+	},
+	methods: {
+		async getGoods() {
+			let result = await axiosGet("/api/goods");
+			console.log(result, 'xxxxxx');
+			if (+result.code === 200) {
+				this.goodlist = result.data
 			}
 		},
-		methods: {
+	},
+	created() {
+		this.getGoods();
 
-		}
 	}
+}
 </script>
 
 <style>
