@@ -8,8 +8,13 @@ const GoodsSchema = new mongoose.Schema({
   sold_num: Number,
   cover_pic: String,
   detail_pic: Array,
+  hot: Number,
+  cart:Boolean,
+  like:Boolean
+
 });
 
 const Goods = mongoose.model("Goods", GoodsSchema, "goods");
+
 
 module.exports = Goods;
