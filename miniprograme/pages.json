@@ -124,6 +124,15 @@
             }
             
         }
+        ,{
+            "path" : "pages/voucherCenter/voucherCenter",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "充值中心",
+                "enablePullDownRefresh": false
+            }
+            
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
