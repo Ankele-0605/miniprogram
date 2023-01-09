@@ -50,7 +50,8 @@
 									￥{{item.price}}
 								</view>
 								<view class="steper">
-									<u-action-sheet :list="list" v-model="show"></u-action-sheet>
+									<van-stepper :value="1" :change="onChange" />
+
 
 								</view>
 							</view>
@@ -91,7 +92,7 @@
 	export default {
 		data() {
 			return {
-				
+
 				isDisabled: false, //结算禁用
 				cartlist: [], //购物车数据
 				checkAll: false, //全选
@@ -127,10 +128,6 @@
 					console.log(this.cartlist, "......2");
 				}
 			},
-			// <image v-if="CheckAll" class="select" :src="selectPitchOn" mode="widthFix"
-			// 	@click="chooseCheckAll"></image>
-			// <image v-if="!CheckAll" class="select" :src="selectDefault" mode="widthFix"
-			// 	@click="chooseCheckAll"></image>
 
 			// 点击全选
 			chooseCheckAll() {
@@ -181,9 +178,11 @@
 					}
 				}
 
-				// this.totalPrice()
+				//步进器变化
 			},
-
+			onChange(event) {
+				console.log(event.detail);
+			},
 
 		}
 	}
