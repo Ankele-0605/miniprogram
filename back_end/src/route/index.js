@@ -22,6 +22,7 @@ router.get("/sort", async (req, res) => {
   });
 });
 
+
 // 根据商品id获取商品
 router.get("/getGoodsById/:id", async (req, res) => {
   let id = req.params.id;
@@ -48,8 +49,10 @@ router.get("/getrecom/:id", async (req, res) => {
   });
 });
 // 购物车
+
 router.get("/cart", async (req, res) => {
   let result = await Goods.find({ cart: true });
+
   // console.log(result);
   res.json({
     code: 200,
@@ -58,6 +61,7 @@ router.get("/cart", async (req, res) => {
   });
 });
 // 收藏
+
 router.get("/like", async (req, res) => {
   let result = await Goods.find({ like: true });
   // console.log(result);

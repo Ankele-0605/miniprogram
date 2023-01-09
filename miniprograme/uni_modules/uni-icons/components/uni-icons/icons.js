@@ -1164,6 +1164,6 @@ export default {
       "font_class": "cart",
       "unicode": "e631",
       "unicode_decimal": 58929
-    }
+    },
   ]
 }
