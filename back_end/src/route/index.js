@@ -21,13 +21,26 @@ router.get("/sort", async (req, res) => {
     data: result,
   });
 });
+
+// 根据商品id获取商品
+router.get("/getGoodsById/:id", async (req, res) => {
+  let id = req.params.id;
+  let result = await Goods.find({ id: id });
+
+  res.json({
+    code: 200,
+    message: "success",
+    data: result,
+  });
+});
+
 // 分类页面通过每个年级对应id获取商品列表
-router.get('/getrecom/:id',async (req,res)=>{
+router.get("/getrecom/:id", async (req, res) => {
   let id = req.params.id;
   // console.log(id);
-  let result = await Goods.find( {"parent_id":id });
+  let result = await Goods.find({ parent_id: id });
   // console.log(result);
- 
+
   res.json({
     code: 200,
     message: "success",
@@ -35,8 +48,8 @@ router.get('/getrecom/:id',async (req,res)=>{
   });
 });
 // 购物车
-router.get('/cart',async (req,res)=>{
-  let result = await Goods.find({"cart":true });
+router.get("/cart", async (req, res) => {
+  let result = await Goods.find({ cart: true });
   // console.log(result);
   res.json({
     code: 200,
@@ -45,8 +58,8 @@ router.get('/cart',async (req,res)=>{
   });
 });
 // 收藏
-router.get('/like',async (req,res)=>{
-  let result = await Goods.find({"like":true });
+router.get("/like", async (req, res) => {
+  let result = await Goods.find({ like: true });
   // console.log(result);
   res.json({
     code: 200,
@@ -54,9 +67,5 @@ router.get('/like',async (req,res)=>{
     data: result,
   });
 });
-
-
-
-
 
 module.exports = router;
