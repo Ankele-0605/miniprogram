@@ -133,7 +133,12 @@
 		"app-plus": {
 			"background": "#efeff4"
 		},
-		"navigationStyle": "custom"
+		"navigationStyle": "custom",
+		"usingComponents": {
+			// "vant-icon":"/wxcomponents/@vant/weapp/icon/index",
+			"van-icon": "/wxcomponents/@vant/weapp/icon/index",
+			"van-stepper": "/wxcomponents/@vant/weapp/stepper/index"
+		}
 	},
 	"tabBar": {
 		"color": "#7A7E83",
