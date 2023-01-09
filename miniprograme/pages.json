@@ -80,7 +80,7 @@
             
         }
         ,{
-            "path" : "pages/ Integral/ Integral",
+            "path" : "pages/Integral/Integral",
             "style" :                                                                                    
             {
                 "navigationBarTitleText": "积分商城",
@@ -120,6 +120,15 @@
             "style" :                                                                                    
             {
                 "navigationBarTitleText": "会员中心",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/voucherCenter/voucherCenter",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "充值中心",
                 "enablePullDownRefresh": false
             }
             

@@ -8,7 +8,7 @@
 				</view>
 				<view class="wxuser">
 					<text class="text">微信用户</text>
-					<view class="refresh">
+					<view class="refresh" @click="dataRefresh('center')">
 						<image class="image" src="@/static/user/refresh.png"></image>
 						<text class="text">刷新</text>
 					</view>
@@ -19,7 +19,7 @@
 					<image class="payment" src="@/static/user/pay-code.png"></image>
 					<text class="text">付款码</text>
 				</view>
-				<view class="address">
+				<view class="address" @click="toAddress">
 					<image class="image" src="@/static/user/address-white.png"></image>
 					<text class="text">收货地址</text>
 				</view>
@@ -28,7 +28,7 @@
 		<view class="content">
 			<view class="my">
 				<view v-for="(item, index) in myList" :index="index" :key="index" class="item">
-					<view>
+					<view :id=item.pageUrl @click="openMyPage($event)">
 						<view class="num">{{item.num}}</view>
 						<view class="explain">
 							<image class="image" :src="item.url" mode="aspectFill" />
@@ -38,9 +38,10 @@
 				</view>
 			</view>
 			<view class="canUse">
-				<uni-grid :column="4" :show-border="false" :square="false" :highlight="true" @change="change">
+				<uni-grid :column="4" :show-border="false" :square="false" :highlight="true">
 					<uni-grid-item v-for="(item, index) in canUseList" :index="index" :key="index">
-						<view class="grid-item-box" style="background-color: #fff;">
+						<view :id="item.pageUrl" @click="openCanUsePage($event)" class="grid-item-box"
+							style="background-color: #fff;">
 							<view class="num">{{item.num}}</view>
 							<view class="explain">
 								<image class="image" :src="item.url" mode="aspectFill" />
@@ -52,13 +53,17 @@
 			</view>
 			<view class="order">
 				<view class="title">
-					<text class="myOrder">我的订单</text>
-					<view class="more">
+					<view class="myOrder">
+						<text>我的订单</text>
+					</view>
+					<view class="middle">
+					</view>
+					<view class="more" @click="toOrderPage">
 						<text class="text">查看更多</text>
 						<uni-icons type="right"></uni-icons>
 					</view>
 				</view>
-				<uni-grid :column="5" :show-border="false" :square="false" :highlight="true" @change="change">
+				<uni-grid :column="5" :show-border="false" :square="false" :highlight="true">
 					<uni-grid-item v-for="(item ,index) in orderList" :index="index" :key="index">
 						<view class="grid-item-box" style="background-color: #fff;">
 							<image class="image" :src="item.url" mode="aspectFill" />
@@ -92,105 +97,194 @@
 						num: 0,
 						url: '/static/user/favorite.png',
 						text: '我的收藏',
+						pageUrl: '/pages/mycollection/mycollection'
 					},
 					{
 						num: 0,
 						url: '/static/user/foot.png',
 						text: '我的足迹',
+						pageUrl: '/pages/mytracks/mytracks'
 					},
 				],
 				canUseList: [{
 						num: 0,
 						url: '/static/user/icon-integral.png',
 						text: '积分',
+						pageUrl: '/pages/Integral/Integral'
 					},
 					{
 						num: "0.00",
 						url: '/static/user/icon-balance.png',
 						text: '余额',
+						pageUrl: '/pages/balance/balance'
 					},
 					{
 						num: 0,
 						url: '/static/user/icon-coupon.png',
 						text: '优惠券',
+						pageUrl: '/pages/mycoupon/mycoupon'
 					},
 					{
 						num: 0,
 						url: '/static/user/icon-card.png',
 						text: '卡券',
+						pageUrl: '/pages/getcoupon/getcoupon'
 					},
 				],
 				orderList: [{
 						url: '/static/order/icon-order-0.png',
 						text: '待付款',
 						badge: '1',
-						type: "error"
+						type: "error",
+						pageUrl: ''
 					},
 					{
 						url: '/static/order/icon-order-1.png',
 						text: '待发货',
 						badge: '',
-						type: "error"
+						type: "error",
+						pageUrl: ''
 					},
 					{
 						url: '/static/order/icon-order-2.png',
 						text: '待收货',
 						badge: '',
-						type: "error"
+						type: "error",
+						pageUrl: ''
 					},
 					{
 						url: '/static/order/icon-order-3.png',
 						text: '已完成',
 						badge: '',
-						type: "error"
+						type: "error",
+						pageUrl: ''
 					},
 					{
 						url: '/static/order/icon-order-4.png',
-						text: '售后'
+						text: '售后',
+						pageUrl: ''
 					}
 				],
-
 				serveList: [{
 						url: '/static/serve/delete.png',
 						text: '清理缓存',
+						pageUrl: ''
 					},
 					{
 						url: '/static/serve/service.png',
 						text: '客服',
+						pageUrl: ''
 					},
 					{
 						url: '/static/serve/pay-dot.png',
 						text: '充值中心',
+						pageUrl: '/pages/voucherCenter/voucherCenter'
 					},
 					{
 						url: '/static/serve/balance.png',
 						text: '余额记录',
+						pageUrl: '/pages/balance/balance'
 					},
 					{
 						url: '/static/serve/coupon-icon.png',
 						text: '我的优惠券',
+						pageUrl: '/pages/mycoupon/mycoupon'
 					},
 					{
 						url: '/static/serve/coupon.png',
 						text: '领券中心',
+						pageUrl: '/pages/getcoupon/getcoupon'
 					},
 					{
 						url: '/static/serve/after-sale.png',
 						text: '售后',
+						pageUrl: '/pages/order/order'
 					},
 					{
 						url: '/static/serve/vip.png',
 						text: '会员中心',
+						pageUrl: '/pages/vipcenter/vipcenter'
 					},
-				]
+				],
+
+
 			}
 		},
 		methods: {
+			// 跳转到首页
 			toIndex() {
 				uni.switchTab({
 					url: "/pages/index/index"
 				})
-			}
+			},
+			// 数据更新弹框
+			dataRefresh(type) {
+				uni.showToast({
+					title: '资料已更新',
+					icon: 'none',
+					duration: 2000
+				})
+			},
+			// 跳转到收货地址
+			toAddress() {
+				uni.navigateTo({
+					url: "/pages/address/address"
+				})
+			},
+			// 我的收藏/我的足迹的跳转
+			openMyPage(e) {
+				uni.navigateTo({
+					url: e.currentTarget.id
+				})
+			},
+			// 积分余额等的跳转
+			openCanUsePage(e) {
+				uni.navigateTo({
+					url: e.currentTarget.id
+				})
+			},
+			// 跳转到订单页面
+			toOrderPage() {
+				console.log('11111111111111');
+				uni.navigateTo({
+					url: "/pages/order/order"
+				});
+			},
+			change(e) {
+				let index = e.detail.index;
+				// 清理缓存
+				if (index == 0) {
+					uni.showModal({
+						title: '提示',
+						content: '确定要清理缓存',
+						success: function(res) {
+							if (res.confirm) {
+								uni.clearStorage(); //清理本地数据缓存。
+								// uni.clearStorageSync();//同步清理本地数据缓存
+								uni.showToast({
+									title: '清理完成',
+									icon: 'none',
+									duration: 2000 //持续时间为 2秒
+								})
+							} else if (res.cancel) {
+
+							}
+						}
+					});
+				}
+				// 客服
+				else if (index == 1) {}
+				// 其他页面跳转
+				else {
+					let arr = this.serveList.slice(index, index + 1);
+					// console.log(arr[0].pageUrl);
+					uni.navigateTo({
+						url: arr[0].pageUrl
+					})
+				}
+			},
+
+
 		}
 	}
 </script>
@@ -389,17 +483,21 @@
 
 			.title {
 				display: flex;
-				flex-direction: row;
-				justify-content: space-between;
+				justify-content: space-around;
 				background-color: #fff;
 				padding-top: 5px;
 
 				.myOrder {
+					flex: 1;
 					padding-left: 15px;
 				}
 
+				.middle {
+					flex: 2;
+				}
+
 				.more {
-					padding-right: 10px;
+					flex: 1;
 
 					.text {
 						color: #bbb;
