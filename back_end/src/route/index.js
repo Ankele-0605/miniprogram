@@ -21,6 +21,20 @@ router.get("/sort", async (req, res) => {
     data: result,
   });
 });
+
+
+// 根据商品id获取商品
+router.get("/getGoodsById/:id", async (req, res) => {
+  let id = req.params.id;
+  let result = await Goods.find({ id: id });
+
+  res.json({
+    code: 200,
+    message: "success",
+    data: result,
+  });
+});
+
 // 分类页面通过每个年级对应id获取商品列表
 router.get('/getrecom/:id', async (req, res) => {
   let id = req.params.id;
@@ -111,8 +125,6 @@ router.post('/delCollection', async (req, res) => {
     data: result
   })
 });
-
-
 
 
 module.exports = router;

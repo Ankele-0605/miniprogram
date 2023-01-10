@@ -1,7 +1,9 @@
 <template>
-	<view>
+	<view class="main">
 		<uni-nav-bar :fixed="true" status-bar left-icon="left" title="领券中心" @clickLeft="goBack" />
-		领券中心
+		<view class="content">
+
+		</view>
 	</view>
 </template>
 
@@ -22,6 +24,14 @@
 	}
 </script>
 
-<style>
+<style lang="less">
+	.main {
+		height: 100vh;
+		display: flex;
 
+		.content {
+			flex: 1;
+			background-color: #f7f7f7;
+		}
+	}
 </style>
