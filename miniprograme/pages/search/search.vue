@@ -1,22 +1,31 @@
 <template>
 	<view>
-		<view>
-			<uni-nav-bar :fixed="true" status-bar left-icon="left" title="搜索页" @clickLeft="goBack" />
-		</view>
+		<!-- 页头 -->
+		<uni-nav-bar :fixed="true" status-bar left-icon="left" title="搜索页" @clickLeft="goBack" />
 
-		<uni-section>
-			<uni-easyinput class="uni-mt-5" v-model="value" placeholder="请输入内容" @input="input"></uni-easyinput>
-		</uni-section>
+		<!-- 搜索页主要内容 -->
+		<view class="search">
 
+			<!-- 搜索框 -->
+			<uni-section>
+				<uni-easyinput class="uni-mt-5" v-model="value" placeholder="请输入内容" @input="input"></uni-easyinput>
+			</uni-section>
 
-
-		<uni-list>
-			<uni-list-item v-for="item in hotgoodslist" :key="item.id" :title="item.name" :thumb="item.cover_pic">
-			<view >
-				{{item.name}}
+			<!-- 商品热搜榜 -->
+			<view class="hotsearch">
+				<view class="title">
+					<image src="@/static/icon/resou.png" mode=""></image>
+				</view>
+				
+				<view class="list">
+					<uni-list>
+					 	<uni-list-item v-for="item in hotgoodslist" :key="item.id" :title="item.name"  :thumb="item.cover_pic"></uni-list-item>
+					</uni-list>
+				</view>
+	
 			</view>
-			</uni-list-item>
-		</uni-list>
+
+		</view>
 	</view>
 
 </template>
@@ -31,7 +40,7 @@
 			return {
 				value: '',
 				placeholderStyle: "color:#2979FF;font-size:14px",
-				hotgoodslist: [],
+				hotgoodslist: [], //热搜列表
 			}
 		},
 		methods: {
@@ -43,11 +52,12 @@
 					delta: 1
 				});
 			},
+			// 获取热搜榜商品信息
 			async gethotgoods() {
-				let result = await axiosGet("/api/goods");
+				let result = await axiosGet("/api/getGoodsByHot/:hot");
 				console.log(result);
 				if (+result.code === 200) {
-					this.hotgoodslist = result.data
+					this.hotgoodslist = result.data; 
 				}
 			}
 		},
@@ -74,5 +84,22 @@
 
 	.uni-easyinput {
 		background-color: #fff;
+	}
+
+	.hotsearch {
+		margin: 20rpx;
+		.title {
+			margin: 20rpx;
+			width: 87px !important;
+			height: 24px !important;
+			image {
+				width: 87px !important;
+				height: 24px !important;
+			}
+		}
+		
+		.list{
+			border: 1px solid #ebebeb;
+		}
 	}
 </style>
