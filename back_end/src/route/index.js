@@ -35,6 +35,17 @@ router.get("/getGoodsById/:id", async (req, res) => {
   });
 });
 
+// 根据商品hot字段获取热搜榜商品
+router.get('/getGoodsByHot/:hot', async (req, res) => {
+  let id = req.params.id;
+  let result = await Goods.find({ "hot": { $ne: 20 } });
+  res.json({
+    code: 200,
+    message: "success",
+    data: result,
+  });
+});
+
 // 分类页面通过每个年级对应id获取商品列表
 router.get('/getrecom/:id', async (req, res) => {
   let id = req.params.id;
