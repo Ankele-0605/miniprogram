@@ -84,8 +84,8 @@ router.post('/delcart', async (req, res) => {
       { id: idarr[i] },
       { $set: { cart: false } }
     );
-  }
-  let result = await Goods.find({ id: 27 });
+  }  
+  let result = await Goods.find({ id: id });
   res.json({
     code: 200,
     message: "已删除",
