@@ -9,7 +9,7 @@
 				专题
 			</view>
 		</view>
-		<mycollecGoods></mycollecGoods>
+		<mycollecGoods v-if="navSelect_l" @click="navclick_l"></mycollecGoods>
 	</view>
 </template>
 
