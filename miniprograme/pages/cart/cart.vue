@@ -63,13 +63,13 @@
 									<!-- <van-stepper min="0" button-size="16px" input-width="20px" :value="numberValue"
 										@change="onStepperChange" :data-name="item.name" :data-id="item.id" /> -->
 									<view class="num-minus" @click="chooseMinus(index)">
-										-
+										<image class="image" src="@/static/icon/subtract.png" mode=""></image>
 									</view>
 									<view class="input-price">
 										{{item.buynum}}
 									</view>
 									<view class="num-add" @click="chooseAddNum(index)">
-										+
+										<image class="image" src="@/static/icon/add-but.png" mode=""></image>
 									</view>
 
 								</view>
@@ -121,21 +121,21 @@
 				checkAll: false, //全选
 				selectDefault: "../../static/icon/uncheck.png", // 默认图标 
 				selectPitchOn: "../../static/icon/checked.png", // 选中图标
-	
+
 				isSelection: false, // 规格选择默认false
 				isCheckAll: false, // 购物车全选/反选默认false
 				numberValue: 0,
 				sumMoney: 0, //价格总计
-				goods_num : 0,//总件数
+				goods_num: 0, //总件数
 				adminShow: false, // 编辑选择默认false
 				ideld: [],
-	
-	
+
+
 			}
 		},
 		created() {
 			this.getcartlist();
-	
+
 		},
 		onShow() {
 			this.getcartlist();
@@ -163,8 +163,8 @@
 				this.cartlist[index].buynum = buynum;
 				this.totalPrice()
 			},
-	
-	
+
+
 			// 获得购物车商品数据
 			async getcartlist() {
 				var result = await axiosGet("/api/cart");
@@ -193,7 +193,7 @@
 				// setTimeout(() => {
 				// 	this.$router.go(0)
 				// }, 500)
-	
+
 			},
 			// 点击全选
 			chooseCheckAll() {
@@ -214,7 +214,7 @@
 			},
 			// 商品选中反选
 			chooseGoodsSelect(index) {
-	
+
 				let count = 0;
 				let selectedNum = 0;
 				if (this.cartlist[index].selected) {
@@ -236,30 +236,30 @@
 				}
 				this.totalPrice();
 			},
-	
-			
+
+
 			// 计算总价
 			totalPrice() {
-				let sumMoney = 0;//总金额
-				let goods_num = 0;//总件数
+				let sumMoney = 0; //总金额
+				let goods_num = 0; //总件数
 				for (var i = 0; i < this.cartlist.length; i++) {
 					if (this.cartlist[i].selected) {
 						sumMoney += this.cartlist[i].price * this.cartlist[i].buynum;
-						goods_num+=this.cartlist[i].buynum;
+						goods_num += this.cartlist[i].buynum;
 					}
 				}
 				this.sumMoney = parseFloat(sumMoney).toFixed(2);
 				this.goods_num = goods_num;
 				// console.log(this.sumMoney,'this.sumMoney')
 				// console.log(this.goods_num,'this.goods_num')
-				if(this.goods_num == 0) {
+				if (this.goods_num == 0) {
 					this.isDisabled = true;
 				} else {
 					this.isDisabled = false;
 				}
-			
+
 			},
-	
+
 			// 编辑按钮
 			chooseSwitchover() {
 				this.adminShow = !this.adminShow
