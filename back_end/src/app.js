@@ -10,30 +10,30 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 //配置expressjwt中间件
-app.use(
-  expressjwt({
-    secret: "hello_token",
-    algorithms: ["HS256"],
-  }).unless({
-    //用户第一次登录的时候不需要验证token
-    path: ["/api/login", "/api/list"],
-  })
-);
+// app.use(
+//   expressjwt({
+//     secret: "hello_token",
+//     algorithms: ["HS256"],
+//   }).unless({
+//     //用户第一次登录的时候不需要验证token
+//     path: ["/api/login", "/api/list"],
+//   })
+// );
 
-app.use(async (req, res, next) => {
-  var token = req.headers["authorization"];
-  if (!token) {
-    return next();
-  } else {
-    try {
-      var data = await getToken(token);
-      req.data = data;
-      return next();
-    } catch (e) {
-      return next();
-    }
-  }
-});
+// app.use(async (req, res, next) => {
+//   var token = req.headers["authorization"];
+//   if (!token) {
+//     return next();
+//   } else {
+//     try {
+//       var data = await getToken(token);
+//       req.data = data;
+//       return next();
+//     } catch (e) {
+//       return next();
+//     }
+//   }
+// });
 
 async function main() {
   await mongoose.connect("mongodb://localhost:27017/miniprograme"); //连接本地数据库
