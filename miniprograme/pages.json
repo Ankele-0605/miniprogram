@@ -133,6 +133,15 @@
             }
             
         }
+        ,{
+            "path" : "pages/mycard/mycard",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "我的卡券",
+                "enablePullDownRefresh": false
+            }
+            
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
@@ -142,12 +151,7 @@
 		"app-plus": {
 			"background": "#efeff4"
 		},
-		"navigationStyle": "custom",
-		"usingComponents": {
-			// "vant-icon":"/wxcomponents/@vant/weapp/icon/index",
-			"van-icon": "/wxcomponents/@vant/weapp/icon/index",
-			"van-stepper": "/wxcomponents/@vant/weapp/stepper/index"
-		}
+		"navigationStyle": "custom"
 	},
 	"tabBar": {
 		"color": "#7A7E83",

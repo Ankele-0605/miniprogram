@@ -142,7 +142,7 @@
 					this.clickBtn = e.target.id
 				}
 				if (sortName == "全部分类"||sortName == "全部状态") {
-					likexl = this.list;
+					likexl = this.list.slice(0);
 					likexl.shift();
 				}
 				//  else if (sortName == "全部状态") {
