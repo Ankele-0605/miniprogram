@@ -388,7 +388,7 @@
 	}
 
 	.content {
-		height: 1000rpx;
+		height: 830rpx;
 		background-color: #f7f7f7;
 
 		.my {
