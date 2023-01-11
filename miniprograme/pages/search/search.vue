@@ -7,22 +7,42 @@
 		<view class="search">
 
 			<!-- 搜索框 -->
-			<uni-section>
-				<uni-easyinput class="uni-mt-5" v-model="value" placeholder="请输入内容" @input="input"></uni-easyinput>
-			</uni-section>
+			<view class="search-input">
+				<uni-search-bar @confirm="search" :focus="true"  @input="input" @clear="clear" @cancel="cancel">
+				</uni-search-bar>
+			</view>
 
 			<!-- 商品热搜榜 -->
 			<view class="hotsearch">
 				<view class="title">
 					<image src="@/static/icon/resou.png" mode=""></image>
 				</view>
-				
+
 				<view class="list">
 					<uni-list>
-					 	<uni-list-item v-for="item in hotgoodslist" :key="item.id" :title="item.name"  :thumb="item.cover_pic"></uni-list-item>
+						<uni-list-item v-for="(item,index) in hotgoodslist" :key="item.id"
+							:to="'/pages/gooddetail/gooddetail?id='+item.id">
+							<template v-slot:header>
+								<image v-if="index===0" class="slot-rank-image" src="@/static/icon/one.png"
+									mode="widthFix"></image>
+								<image v-else-if="index===1" class="slot-rank-image" src="@/static/icon/two.png"
+									mode="widthFix"></image>
+								<image v-else-if="index===2" class="slot-rank-image" src="@/static/icon/three.png"
+									mode="widthFix"></image>
+								<view v-else class="slot-text rank-text">{{index+1}}</view>
+							</template>
+							<template v-slot:body>
+								<view class="slot-image">
+									<image :src="item.cover_pic" mode="widthFix"></image>
+								</view>
+							</template>
+							<template v-slot:footer>
+								<view class="slot-text">{{item.name}}</view>
+							</template>
+						</uni-list-item>
 					</uni-list>
 				</view>
-	
+
 			</view>
 
 		</view>
@@ -38,26 +58,43 @@
 	export default {
 		data() {
 			return {
-				value: '',
-				placeholderStyle: "color:#2979FF;font-size:14px",
 				hotgoodslist: [], //热搜列表
 			}
 		},
 		methods: {
-			input(e) {
-				console.log('输入内容：', e);
-			},
 			goBack() {
 				uni.navigateBack({
 					delta: 1
 				});
+			},
+			//enter键开始搜索
+			search(res) {
+				console.log('search:', res)
+				uni.showToast({
+					title: '搜索：' + res.value,
+					icon: 'none'
+				})
+			},
+			//监控搜索框输入的内容
+			input(res) {
+				console.log('input:', res)
+			},
+			//清除搜索框
+			clear(res) {
+				uni.showToast({
+					title: '清除',
+					icon: 'none'
+				})
+			},
+			//取消搜索
+			cancel(res) {
 			},
 			// 获取热搜榜商品信息
 			async gethotgoods() {
 				let result = await axiosGet("/api/getGoodsByHot/:hot");
 				console.log(result);
 				if (+result.code === 200) {
-					this.hotgoodslist = result.data; 
+					this.hotgoodslist = result.data;
 				}
 			}
 		},
@@ -68,38 +105,67 @@
 </script>
 
 <style lang="less">
-	.uni-section {
-		background-color: #e9e9e9 !important;
+	.search-input{
+		background-color: #f1f1f1;
+		.uni-searchbar__box{
+			background-color: white !important;
+			border-radius: 20px !important;
+		}
 	}
-
-	.uni-section-header {
-		padding: 0 !important;
-	}
-
-	.uni-section-content {
-		width: 80%;
-		border-radius: 80%;
-		padding: 10px 10px !important;
-	}
-
-	.uni-easyinput {
-		background-color: #fff;
-	}
-
 	.hotsearch {
 		margin: 20rpx;
+
 		.title {
 			margin: 20rpx;
 			width: 87px !important;
 			height: 24px !important;
+
 			image {
 				width: 87px !important;
 				height: 24px !important;
 			}
 		}
-		
-		.list{
+
+		.list {
 			border: 1px solid #ebebeb;
+			overflow: hidden;
+			box-shadow: 2px 2px 10px 1px rgba(0, 0, 0, 0.1), -1px -1px 10px 1px rgba(0, 0, 0, 0.1);
+			border-radius: 2vw;
+			margin: 5rpx;
+
+			.uni-list-item__container {
+				display: flex;
+				align-items: center;
+
+				.slot-rank-image {
+					width: 8vw;
+					margin: 0 9rpx;
+				}
+
+				.slot-image {
+					image {
+						width: 30px;
+						margin: 0 15rpx;
+						border-radius: 2vw;
+					}
+				}
+
+				.slot-text {
+					font-size: 11px;
+					display: -webkit-box;
+					overflow: hidden;
+					text-overflow: ellipsis;
+					word-wrap: break-word;
+					white-space: normal !important;
+					-webkit-line-clamp: 1;
+					-webkit-box-orient: vertical;
+				}
+
+				.rank-text {
+					width: 10vw;
+					text-align: center;
+				}
+			}
 		}
 	}
 </style>

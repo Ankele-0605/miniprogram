@@ -6,6 +6,7 @@ const router = express.Router();
 const Goods = require("../models/goods");
 const Sort = require("../models/sort");
 
+//登录
 router.post("/login", (req, res) => {
   const { code } = req.body;
   //获取code登录凭证之后，根据code appid  secret向微信服务器发送请求索要openid和session_key
@@ -136,11 +137,9 @@ router.post("/delcart", async (req, res) => {
   for (var i = 0; i < idarr.length; i++) {
     await Goods.updateOne({ id: idarr[i] }, { $set: { cart: false } });
   }
-  let result = await Goods.find({ id: id });
   res.json({
     code: 200,
     message: "已删除",
-    data: result,
   });
 });
 
@@ -174,11 +173,9 @@ router.post("/delCollection", async (req, res) => {
   for (var i = 0; i < idarr.length; i++) {
     await Goods.updateOne({ id: idarr[i] }, { $set: { like: false } });
   }
-  let result = await Goods.find({ id: 27 });
   res.json({
     code: 200,
     message: "已删除",
-    data: result,
   });
 });
 
