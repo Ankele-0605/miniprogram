@@ -84,7 +84,7 @@ router.post('/delcart', async (req, res) => {
       { id: idarr[i] },
       { $set: { cart: false } }
     );
-  }  
+  }
   let result = await Goods.find({ id: id });
   res.json({
     code: 200,
