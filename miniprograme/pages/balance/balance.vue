@@ -7,7 +7,7 @@
 			<view class="count">
 				<text class="title">账户余额(元)</text>
 				<text class="num">{{countNum}}</text>
-				<view class="add">
+				<view class="add" @click="toVoucherPage">
 					<text class="text">充值</text>
 				</view>
 			</view>
@@ -24,29 +24,6 @@
 </template>
 
 <script>
-	// 获取任意时间
-	// function getDate(date, AddDayCount = 0) {
-	// 	if (!date) {
-	// 		date = new Date()
-	// 	}
-	// 	if (typeof date !== 'object') {
-	// 		date = date.replace(/-/g, '/')
-	// 	}
-	// 	const dd = new Date(date)
-
-	// 	dd.setDate(dd.getDate() + AddDayCount) // 获取AddDayCount天后的日期
-
-	// 	const y = dd.getFullYear()
-	// 	const m = dd.getMonth() + 1 < 10 ? '0' + (dd.getMonth() + 1) : dd.getMonth() + 1 // 获取当前月份的日期，不足10补0
-	// 	const d = dd.getDate() < 10 ? '0' + dd.getDate() : dd.getDate() // 获取当前几号，不足10补0
-	// 	return {
-	// 		fullDate: y + '-' + m + '-' + d,
-	// 		year: y,
-	// 		month: m,
-	// 		date: d,
-	// 		day: dd.getDay()
-	// 	}
-	// }
 	export default {
 		data() {
 			return {
@@ -59,22 +36,19 @@
 				}
 			}
 		},
-		
+
 		methods: {
 			goBack() {
 				uni.navigateBack({
 					delta: 1
 				});
 			},
-			change(e) {
-				// console.log('change 返回:', e)
-				// 模拟动态打卡
-				// if (this.info.selected.length > 5)
-				// 	return this.info.selected.push({
-				// 		date: e.fulldate,
-				// 		info: '打卡'
-				// 	})
-			},
+			toVoucherPage() {
+				uni.navigateTo({
+					url: '/pages/voucherCenter/voucherCenter',
+					animationType:'none'
+				});
+			}
 		}
 	}
 </script>
@@ -151,7 +125,8 @@
 			.uni-calendar__box {
 				display: none;
 			}
-			.uni-calendar__backtoday{
+
+			.uni-calendar__backtoday {
 				display: none;
 			}
 		}
