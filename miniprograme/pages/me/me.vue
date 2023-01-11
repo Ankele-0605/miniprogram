@@ -128,7 +128,7 @@
 						num: 0,
 						url: '/static/user/icon-card.png',
 						text: '卡券',
-						pageUrl: '/pages/getcoupon/getcoupon'
+						pageUrl: '/pages/mycard/mycard'
 					},
 				],
 				orderList: [{
@@ -245,7 +245,6 @@
 			},
 			// 跳转到订单页面
 			toOrderPage() {
-				console.log('11111111111111');
 				uni.navigateTo({
 					url: "/pages/order/order"
 				});
