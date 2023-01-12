@@ -13,8 +13,10 @@
 				<view class="gl" @click="edit">
 					{{edited? '完成': '管理'}}
 				</view>
-				<view class="pl" @click="ranged">
-					{{range? '横排': '竖排'}}
+				<view class="pl" >
+					<image  :src="range ? rangePitchOn:rangeDefault"
+						mode="widthFix" @click="ranged"></image>
+					<!-- {{range? '横排': '竖排'}} -->
 				</view>
 			</view>
 		</view>
@@ -44,20 +46,32 @@
 			</view>
 		</view>
 		<scroll-view scroll-y="true" class="products">
-			<view :class="[this.range ? 'cart-card-trans':'cart-card']" v-for="(item,index) in likexl" :key="item.id">
+			<!-- 收藏为空  -->
+			<view v-if="likexl2.length === 0" class="empty">
+				<view class="col-emtpy">
+					<image class="image" src="@/static/icon/no-goods.png" mode="widthFix"></image>
+				</view>
+				<view class="col-emtpy-font">
+					没有任何商品哦~
+				</view>
+
+			</view>
+			<!-- 收藏不为空 -->
+			<view v-else :class="[this.range ? 'cart-card-trans':'cart-card']" v-for="(item,index) in likexl2"
+				:key="item.id">
 				<view v-if="this.edited" :class="[this.range ? 'select-l-trans':'select-l']">
 					<image :class="[range ? 'select-trans':'select']" :src="item.selected ? selectPitchOn:selectDefault"
 						mode="widthFix" @click="chooseGoodsSelect(index)"></image>
 				</view>
-				<view :class="[this.range ? 'imag-trans':'imag']">
+				<view :class="[this.range ? 'imag-trans':'imag']" @click="goDetail">
 					<image :src="item.cover_pic" :class="[this.range ? 'img-trans':'img']" mode=""></image>
 				</view>
-				<view :class="[this.range ? 'message-trans':'message']">
+				<view :class="[this.range ? 'message-trans':'message']" @click="goDetail">
 					<!-- 商品名字 -->
 					<view :class="[this.range ? 'biaoti-trans':'biaoti']">
 						{{item.name}}
 					</view>
-					<view class="xia-trans">
+					<view :class="[this.range ? 'xia-trans':'']">
 						<!-- 单价 -->
 						<view :class="[this.range ? 'price-trans':'price']">
 							￥{{item.price}}
@@ -103,7 +117,7 @@
 				alllist: true, //是否选择全部分类
 				alllist2: true, //是否选择全部状态
 				likexl: [], //系列下收藏列表
-				// likexl2: [], //系列下收藏列表（显示数据版）
+				likexl2: [], //系列下收藏列表（显示数据版）
 				listzt: ['全部状态', '优惠', '低库存', '失效'], //状态列表
 				currtzt: '全部状态', //当前状态名
 				sortclick1: false, //1点击了
@@ -111,17 +125,19 @@
 				show1: false, //显示下拉菜单
 				show2: false, //下拉菜单关闭动画
 				edited: false, //点击了编辑
-				range: true, //是否切换排列方式
+				range: false, //是否切换排列方式
 				checkAll: false, //全选
 				isSelection: false, // 规格选择默认false
 				isCheckAll: false, // 购物车全选/反选默认false
 				ideld: [], //已选商品的id数组
 				selectDefault: "../../static/icon/uncheck.png", // 默认单选图标
 				selectPitchOn: "../../static/icon/checked.png", // 单选选中图标
+				rangePitchOn:"../../static/icon/row.png",// 横排图标
+				rangeDefault: "../../static/icon/square.png", // 竖排图标
+				// yes:false,//是否点击了确定按钮
 				clickBtn: '',
 				selectShow: -1,
 				show: false
-
 			};
 		},
 		created() {
@@ -135,13 +151,24 @@
 			// console.log('onReady')
 		},
 		methods: {
+			// 点击跳转详情页
+			goDetail() {
+				if (!this.edited) {
+					uni.navigateTo({
+						url: "../../pages/gooddetail/gooddetail",
+						animationType: 'pop-in',
+					})
+				}
+
+			},
 			// 商品初始化显示
 			goodsinit() {
 				this.likexl = this.list.slice();
 				this.likexl.shift();
+				this.likexl2 = this.likexl;
 				// console.log(this.list, 'goodsinit this.list');
 				// console.log(this.list.slice(), 'goodsinit this.list.slice()');
-				// console.log(this.likexl);
+				// console.log(this.likexl2,'this.likexl2');
 			},
 			// 筛选
 			filtrate(index) {
@@ -227,7 +254,7 @@
 					this.clickBtn = e.target.id
 				}
 
-				if (sortName == "全部状态" && this.likexl.length != 0) {
+				if (sortName == "全部状态" && this.likexl2.length != 0) {
 					this.likexl = this.likexl;
 				} else if (sortName != "全部状态") {
 					this.likexl = [];
@@ -271,6 +298,8 @@
 			selectyes() {
 				this.show1 = false;
 				this.show2 = !this.show1;
+				this.likexl2 = this.likexl;
+				// this.yes = true;
 			},
 			// 点击重置按钮
 			reset() {
@@ -305,6 +334,7 @@
 			// 点击编辑
 			edit() {
 				this.edited = !this.edited;
+
 			},
 			// 点击排列按钮
 			ranged() {
