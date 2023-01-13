@@ -2,7 +2,6 @@
 	<view class="main">
 		<uni-nav-bar :fixed="true" status-bar left-icon="left" title="领券中心" @clickLeft="goBack" />
 		<view class="content">
-
 		</view>
 	</view>
 </template>
@@ -11,7 +10,6 @@
 	export default {
 		data() {
 			return {
-
 			}
 		},
 		methods: {
@@ -19,8 +17,8 @@
 				uni.navigateBack({
 					delta: 1
 				});
-			}
-		}
+			},
+		},
 	}
 </script>
 

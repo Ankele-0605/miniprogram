@@ -22,7 +22,7 @@ app.use(
     algorithms: ["HS256"],
   }).unless({
     //用户第一次登录的时候不需要验证token
-    path: ["/api/user/login", "/^/api/*/"],
+    path: ["/api/user/login","/api/goods",'/api/sort'],//+++++++++
   })
 );
 

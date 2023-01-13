@@ -135,7 +135,6 @@
 		},
 		created() {
 			this.getcartlist();
-
 		},
 		onShow() {
 			this.getcartlist();
