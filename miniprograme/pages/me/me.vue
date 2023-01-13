@@ -7,8 +7,8 @@
 					<image class="image" :src="avatarUrl"></image>
 				</view>
 				<view class="wxuser">
-					<text  v-if="!islogin" class="text" @click="toggle('center')">点击登录</text>
-					<input v-if="islogin" type="nickname" class="text" placeholder="请输入昵称"/>
+					<text v-if="!islogin" class="text" @click="toggle('center')">点击登录</text>
+					<input v-if="islogin" type="nickname" class="text" placeholder="请输入昵称" @blur="blur" :value="nickname"/>
 					<view class="refresh" @click="dataRefresh('center')">
 						<image class="image" src="@/static/user/refresh.png"></image>
 						<text class="text">刷新</text>
@@ -114,6 +114,7 @@
 		data() {
 			return {
 				islogin: false,
+				nickname:'',
 				avatarUrl: "https://mmbiz.qpic.cn/mmbiz/icTdbqWNOwNRna42FI242Lcia07jQodd2FJGIYQfG0LAJGFxM4FbnQP6yfMxBgJ0F3YRqJCJ1aPAK2dQagdusBZg/0",
 				myList: [{
 						num: 0,
@@ -231,8 +232,13 @@
 
 			}
 		},
-		onShow(){
-			this.islogin = uni.getStorageSync('token') ? true:false;
+		onShow() {
+			this.islogin = uni.getStorageSync('token') ? true : false;
+			if (this.islogin) {
+				this.avatarUrl = uni.getStorageSync('avatarUrl');
+				this.nickname = uni.getStorageSync('nickname');
+			}
+
 		},
 		methods: {
 			// 跳转到首页
@@ -254,6 +260,7 @@
 					avatarUrl
 				} = e.detail;
 				console.log(e.detail);
+				uni.setStorageSync('avatarUrl', avatarUrl)
 				this.avatarUrl = avatarUrl;
 			},
 			async dologin() {
@@ -279,8 +286,16 @@
 					console.log(e)
 				}
 			},
+			
+			blur(e){
+				console.log(e.target.value);
+				uni.setStorageSync('nickname', e.target.value)
+			},
 			// 数据更新弹框
 			dataRefresh(type) {
+				uni.redirectTo({
+					url: '../me/me?gid=' + this.gid //写你的路径
+				});
 				uni.showToast({
 					title: '资料已更新',
 					icon: 'none',
