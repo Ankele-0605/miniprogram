@@ -4,10 +4,11 @@
 		<view class="top">
 			<view class="topLeft">
 				<view class="avatar">
-					<image class="image" src="../../static/icon/avatar.png"></image>
+					<image class="image" :src="avatarUrl"></image>
 				</view>
 				<view class="wxuser">
-					<text class="text">微信用户</text>
+					<text  v-if="!islogin" class="text" @click="toggle('center')">点击登录</text>
+					<input v-if="islogin" type="nickname" class="text" placeholder="请输入昵称"/>
 					<view class="refresh" @click="dataRefresh('center')">
 						<image class="image" src="@/static/user/refresh.png"></image>
 						<text class="text">刷新</text>
@@ -86,13 +87,34 @@
 				</uni-grid>
 			</view>
 		</view>
+		<uni-popup ref="popup">
+			<view class="popup-content" :class="{ 'popup-height': type === 'left' || type === 'right' }">
+				<view class="loginSelect">
+					<image class="image" src="http://localhost:8888/public/auth-default.png" mode="widthFix"></image>
+					<text class="close" @click="close"></text>
+					<button class="login" @click="dologin" open-type="chooseAvatar"
+						@chooseavatar="onChooseAvatar"></button>
+				</view>
+			</view>
+		</uni-popup>
 	</view>
 </template>
 
 <script>
+	import {
+		wxgetUserInfo,
+		wxlogin
+	} from '@/common/js/util.js'
+
+	import {
+		axiosGet,
+		axiosPost
+	} from '@/common/js/http.js'
 	export default {
 		data() {
 			return {
+				islogin: false,
+				avatarUrl: "https://mmbiz.qpic.cn/mmbiz/icTdbqWNOwNRna42FI242Lcia07jQodd2FJGIYQfG0LAJGFxM4FbnQP6yfMxBgJ0F3YRqJCJ1aPAK2dQagdusBZg/0",
 				myList: [{
 						num: 0,
 						url: '/static/user/favorite.png',
@@ -207,8 +229,10 @@
 					},
 				],
 
-
 			}
+		},
+		onShow(){
+			this.islogin = uni.getStorageSync('token') ? true:false;
 		},
 		methods: {
 			// 跳转到首页
@@ -216,6 +240,44 @@
 				uni.switchTab({
 					url: "/pages/index/index"
 				})
+			},
+			// 弹出登陆选项
+			toggle(type) {
+				this.type = type
+				this.$refs.popup.open(type)
+			},
+			close() {
+				this.$refs.popup.close()
+			},
+			onChooseAvatar(e) {
+				const {
+					avatarUrl
+				} = e.detail;
+				console.log(e.detail);
+				this.avatarUrl = avatarUrl;
+			},
+			async dologin() {
+				try {
+					//使用wx.login 获取登录凭证
+					let rescode = await wxlogin();
+					if (!rescode) return;
+					console.log(rescode)
+					//向服务器的登录接口发送请求，并且把登录凭证放在请求体里面发送给服务器
+					let response = await axiosPost("/api/user/login", {
+						code: rescode.code,
+					});
+					this.$refs.popup.close();
+					uni.showToast({
+						title: response.message,
+					});
+					if (+response.code === 200) {
+						var token = response.data.token;
+						uni.setStorageSync('token', "Bearer " + token)
+						this.islogin = true;
+					}
+				} catch (e) {
+					console.log(e)
+				}
 			},
 			// 数据更新弹框
 			dataRefresh(type) {
@@ -303,12 +365,12 @@
 			.avatar {
 				width: 60px;
 				height: 60px;
-				border-radius: 50%;
 				margin: 0 10px 0 20px;
 
 				.image {
 					width: 100%;
 					height: 100%;
+					border-radius: 50%;
 				}
 			}
 
@@ -564,6 +626,37 @@
 				font-size: 12px;
 				margin-top: 10px;
 				color: #515151;
+			}
+		}
+	}
+
+	.popup-content {
+		.loginSelect {
+			width: 640rpx;
+			height: 688rpx;
+			position: relative;
+
+			.image {
+				margin: auto;
+			}
+
+			.close {
+				width: 224rpx;
+				height: 80rpx;
+				position: absolute;
+				left: 80rpx;
+				bottom: 27px;
+				border-radius: 20px;
+			}
+
+			.login {
+				width: 224rpx;
+				height: 82rpx;
+				position: absolute;
+				right: 80rpx;
+				bottom: 28px;
+				border-radius: 20px;
+				opacity: 0;
 			}
 		}
 	}

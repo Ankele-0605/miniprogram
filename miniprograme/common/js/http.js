@@ -19,9 +19,11 @@ const instance = axios.create({
 // 添加请求拦截器 ：  在每次发送请求之前执行
 instance.interceptors.request.use(
 	function(config) {
+		var token = uni.getStorageSync('token');
 		if (config.method === "post") {
 			config.headers['Content-Type'] = "application/json"
 		}
+		config.headers['authorization'] = token
 		// 在发送请求之前做些什么
 		return config;
 	},
