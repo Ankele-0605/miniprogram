@@ -32,7 +32,7 @@
 			<span class="yi">|&nbsp;&nbsp;&nbsp;最合你心意</span>
 		</view>
 		<!-- 商品列表 -->
-
+		
 		<!-- 地图 -->
 		<view class="map">
 			<map :scale="scale" style="width: 100%; height: 500rpx;" enable-3D="false" show-compass="false"
@@ -72,7 +72,7 @@
 					{
 						num: 2,
 						url: "http://localhost:8888/public/images/1.jpg",
-						title: '高系列',
+						title: '高中系列',
 						pageUrl: '/pages/category/category'
 					},
 					{
@@ -106,6 +106,8 @@
 						pageUrl: '/pages/category/category'
 					}
 				],
+				// 商品列表
+				
 				// 地图
 				id: 1,
 				title: '1', // String-标注点名
