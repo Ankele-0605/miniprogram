@@ -7,10 +7,11 @@
 		<view class="search">
 
 			<!-- 搜索框 -->
-			<view class="search-input">
-				<uni-search-bar @confirm="search" :focus="true"  @input="input" @clear="clear" @cancel="cancel">
+			<view class="search-box">
+				<uni-search-bar @confirm="search" :focus="true" @input="input" @clear="clear">
 				</uni-search-bar>
 			</view>
+
 
 			<!-- 商品热搜榜 -->
 			<view class="hotsearch">
@@ -59,25 +60,31 @@
 		data() {
 			return {
 				hotgoodslist: [], //热搜列表
+				searchResults: [], // 搜索的结果列表
+
 			}
 		},
 		methods: {
 			goBack() {
-				uni.navigateBack({
-					delta: 1
-				});
+
+			},
+			// 获取热搜榜商品信息
+			async gethotgoods() {
+				let result = await axiosGet("/api/getGoodsByHot/:hot");
+				//console.log(result);
+				if (+result.code === 200) {
+					this.hotgoodslist = result.data;
+				}
 			},
 			//enter键开始搜索
-			search(res) {
-				console.log('search:', res)
-				uni.showToast({
-					title: '搜索：' + res.value,
-					icon: 'none'
-				})
+			async search(e) {
+				let result = await axiosGet("/api/search?keywords=" + e.value);
+				console.log(result);
+				this.searchResults = result.date
 			},
 			//监控搜索框输入的内容
-			input(res) {
-				console.log('input:', res)
+			input(e) { // input 输入事件的处理函数
+				console.log(e) //可以拿到最新的值
 			},
 			//清除搜索框
 			clear(res) {
@@ -86,17 +93,7 @@
 					icon: 'none'
 				})
 			},
-			//取消搜索
-			cancel(res) {
-			},
-			// 获取热搜榜商品信息
-			async gethotgoods() {
-				let result = await axiosGet("/api/getGoodsByHot/:hot");
-				console.log(result);
-				if (+result.code === 200) {
-					this.hotgoodslist = result.data;
-				}
-			}
+
 		},
 		created() {
 			this.gethotgoods();
@@ -105,13 +102,15 @@
 </script>
 
 <style lang="less">
-	.search-input{
+	.search-box {
 		background-color: #f1f1f1;
-		.uni-searchbar__box{
+
+		.uni-searchbar__box {
 			background-color: white !important;
 			border-radius: 20px !important;
 		}
 	}
+
 	.hotsearch {
 		margin: 20rpx;
 
