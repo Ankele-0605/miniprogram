@@ -34,7 +34,7 @@
 			</view>
 
 			<!-- 选择商品规格 -->
-			<view class="choose_input" @click="popClick">
+			<view class="choose_input" v-for="item in gooddetail" :key="item.id" @click="toggle('bottom',item.id)">
 				<view class="choose_text">
 					<text>选择</text>
 				</view>
@@ -87,16 +87,63 @@
 				</view>
 
 				<!-- 加入购物车，购买 -->
-				<view class="tab__dot-box" @click="popClick">
+				<view class="tab__dot-box" v-for="item in gooddetail" :key="item.id" @click="toggle('bottom',item.id)">
 					<!-- 加入购物车 -->
 					<view class="tianjia">
-						<text>加入购物车</text>
+						<text>加入购物车1</text>
 					</view>
 					<!-- 购买 -->
 					<view class="goumai">
 						<text>立即购买</text>
 					</view>
 				</view>
+			</view>
+
+			<!-- 弹窗 -->
+			<view class="popup">
+				<uni-popup ref="popup" background-color="#fff" :mask-click="false">
+					<view class="popup-content" :class="{ 'popup-height': type === 'left' || type === 'right' }">
+						<!-- 弹窗内容 -->
+						<view class="des">
+							<!-- 上 -->
+							<view class="top">
+								<view class="message" v-for="item in gooddetail" :key="item">
+									<image :src="item.cover_pic" mode=""></image>
+									<view class="number_message">
+										<text class="price">￥{{item.price}}</text>
+										<text class="kucun">库存：500</text>
+									</view>
+								</view>
+								<view class="close" @click="closepop">
+									<uni-icons type="closeempty" size="30" color="#aaaaaa"></uni-icons>
+								</view>
+							</view>
+							<!-- 中 -->
+							<view class="middle">
+								<text>规格</text>
+								<button size="mini" type="warn">默认规格</button>
+							</view>
+							<!-- 下 -->
+							<view class="bottom">
+								<view class="numder">
+									<view class="suliang">
+										<text>数量</text>
+									</view>
+									<uni-number-box @change="changeValue" />
+								</view>
+								<view class="btn">
+									<view class="tianjia">
+										<text>加入购物车</text>
+									</view>
+									<view class="goumai">
+										<text>立即购买</text>
+									</view>
+								</view>
+							</view>
+						</view>
+
+					</view>
+				</uni-popup>
 			</view>
 
 		</view>
@@ -117,12 +164,14 @@
 				likeDefault: "../../static/icon/icon-favorite.png", // 默认图标
 				likePitchOn: "../../static/icon/icon-favorite-active.png", // 选中图标
 				like: false, // 默认false
+
+				type: 'center',
 			}
 		},
 		onLoad(options) {
 			// this.id = options.id;
 			this.getGood();
-			
+
 		},
 		methods: {
 			goBack() {
@@ -167,9 +216,21 @@
 					this.addCollection();
 				}
 			},
-			popClick(e){
-				console.log(e)
-			}
+			//点击(选择商品规格，)实现弹窗
+			toggle(type, id) {
+				this.id = id;
+				this.type = type
+				// open 方法传入参数 等同在 uni-popup 组件上绑定 type属性
+				this.$refs.popup.open(type)
+			},
+			//点击关闭弹窗
+			closepop() {
+				this.$refs.popup.close()
+			},
+			//点击选择书籍数量
+			change(value) {
+				this.numberValue = value
+			},
 
 		}
 	}
@@ -197,6 +258,7 @@
 			.red {
 				display: flex;
 				flex-direction: row;
+
 				.price {
 					color: red;
 					font-weight: 600;
@@ -251,6 +313,7 @@
 			.guige {
 				display: flex;
 				flex-direction: row;
+
 				image {
 					width: 10px;
 					height: 10px;
@@ -265,8 +328,6 @@
 			margin: 30rpx 20rpx;
 			border-radius: 10rpx;
 		}
-
-
 
 		.good_detail {
 			margin: 22rpx;
@@ -345,6 +406,105 @@
 					background-color: #fc162d;
 					width: 240rpx;
 					border-radius: 0 20px 20px 0;
+				}
+			}
+		}
+
+		.popup-content {
+			height: 280px;
+
+			.des {
+				display: flex;
+				flex-direction: column;
+				color: #757575;
+				font-size: 13px;
+
+				.top {
+					display: flex;
+					flex-direction: row;
+
+					.message {
+						display: flex;
+						flex-direction: row;
+
+						image {
+							width: 100px;
+							height: 100px;
+						}
+
+						.number_message {
+							display: flex;
+							flex-direction: column;
+							margin: 33px 0;
+
+							.price {
+								font-size: 14px;
+								color: #ff4639;
+							}
+
+							.kucun {
+								color: #9b9b9b;
+							}
+						}
+					}
+
+					.close {
+						margin: 8px 10px 0 110px;
+					}
+				}
+
+				.middle {
+					border: 1px solid #ccc;
+					display: flex;
+					flex-direction: column;
+					padding: 8px;
+					margin-bottom: 5px;
+
+					button {
+						margin: 10px 210px 5px 0px;
+					}
+				}
+
+				.bottom {
+					display: flex;
+					flex-direction: column;
+
+					.numder {
+						display: flex;
+						flex-direction: row;
+						padding: 10px;
+
+						.suliang {
+							margin: 3px 170px 0px 0px;
+						}
+
+					}
+
+					.btn {
+						display: flex;
+						flex-direction: row;
+						font-size: 15px;
+						line-height: 24px;
+						text-align: center;
+						color: #fff;
+
+						.tianjia,
+						.goumai {
+							background-color: #feb710;
+							width: 140px;
+							height: 30px;
+							border-radius: 20px;
+							margin: 10px;
+						}
+
+						.tianjia {
+							background-color: #feb710;
+						}
+
+						.goumai {
+							background-color: #fc162d;
+						}
+					}
 				}
 			}
 		}

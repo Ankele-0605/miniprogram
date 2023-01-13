@@ -174,6 +174,7 @@
 				this.$nextTick(() => {
 					this.showSync = true
 				})
+				
 			},
 			clear() {
 				this.$emit("clear", {

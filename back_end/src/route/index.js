@@ -1,7 +1,4 @@
-const { application } = require("express");
-const { setToken, getToken } = require("../utils/token");
 const express = require("express");
-const request = require("request");
 const router = express.Router();
 const Goods = require("../models/goods");
 const Sort = require("../models/sort");
@@ -60,6 +57,7 @@ router.post("/user/login", (req, res) => {
   });
 });
 
+
 //商品数据
 router.get("/goods", async (req, res) => {
   try {
@@ -86,6 +84,7 @@ router.get("/sort", async (req, res) => {
     next(e);
   }
 });
+
 
 // 根据商品id获取商品
 router.get("/getGoodsById/:id", async (req, res) => {
@@ -117,6 +116,18 @@ router.get("/getGoodsByHot/:hot", async (req, res) => {
     next(e);
   }
 });
+
+// 根据name中的关键字获取商品
+router.get("/search", async (req, res) => {
+  let keywords = req.query.keywords;
+  var reg = new RegExp(keywords)
+  let goods = await Goods.find({ "name": reg }).lean();
+  res.json({
+    code: 200,
+    message: "成功",
+    data: goods
+  })
+})
 
 // 分类页面通过每个年级对应id获取商品列表
 router.get("/getrecom/:id", async (req, res) => {
@@ -158,6 +169,7 @@ router.get("/like", async (req, res) => {
     next(e);
   }
 });
+
 
 // 删除购物车
 router.post("/delcart", async (req, res) => {
@@ -221,6 +233,10 @@ router.post("/delCollection", async (req, res) => {
   } catch (e) {
     next(e);
   }
+bb
 });
+
+
+
 
 module.exports = router;
